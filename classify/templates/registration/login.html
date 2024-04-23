@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="display: flex; justify-content: center; margin: auto;
+    ">
+        <div>
+            <h2>Log In</h2>
+            <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">Log In</button>
+            </form>
+        </div>
+    </div>    
+
+
+{% endblock %}
+
+

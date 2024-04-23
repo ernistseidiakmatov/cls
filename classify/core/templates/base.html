@@ -1,0 +1,47 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASSIFIERS</title>
+
+
+    <style>
+        .container{
+            /* position: relative; */
+            height: 100vh;
+            margin: auto;
+            width: 70%;
+            /* background-color: blueviolet; */
+            /* align-items: center; */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+
+        <div class="header" style="display: flex; justify-content: space-between; border: solid black 2px;">
+            <div class="logo">
+                <h2>CLASSIFIERS</h2>
+            </div>
+            
+            {% if user.is_authenticated %}
+
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form>
+            
+            {% else %}
+                <a href="{% url 'login' %}">Log In</a>
+            {% endif %}    
+        </div>
+
+        {% block content %}
+    
+        {% endblock %}
+    </div>
+
+</body>
+</html>

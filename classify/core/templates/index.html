@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+
+    this is index page
+
+    <div style="display: flex; justify-content: center; padding-top: 20px;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+            <div style="margin-bottom: 10px;">
+                <label>Title</label>
+                {{ form.title }}
+                <!-- {% render_field form.title %} -->
+            </div>
+    
+            <div>
+                {{ form.file }}
+                <!-- {% render_field form.file %} -->
+            </div>
+    
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div>
+        <p> {{ file_dir }} </p>
+    </div>
+
+    <!-- <div>
+        {% for i in img %}
+            <img style="width: 50px;" src="{{ i.file.url }}">
+            <p>{{ i.title }}</p>
+
+        {% endfor %}
+    </div> -->
+
+
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}
