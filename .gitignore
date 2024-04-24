@@ -1,1 +1,21 @@
 venv/
+
+
+
+
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Django-related files
+*.sqlite3
+*.pyc
+*.pyo
+*.pyc
+*.pyo
+*.db.sqlite3
+*.log
+*.pot
+*.pyc
+*.pyo

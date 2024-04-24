@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.cdnfonts.com/css/aircruiser" rel="stylesheet" />
     <title>CLASSIFIERS</title>
 
 
@@ -10,32 +11,112 @@
         .container{
             /* position: relative; */
             height: 100vh;
-            margin: auto;
-            width: 70%;
+            /* margin: auto; */
+            width: 100%;
             /* background-color: blueviolet; */
             /* align-items: center; */
         }
+
+
+
+        body {
+  background-color: #000;
+  color: #fff;
+}
+
+.title {
+  color: red;
+  font-size: 72px;
+  text-align: center;
+  font-family: "Aircruiser", sans-serif;
+  /* font-family: "Aircruiser 3D", sans-serif; */
+  /* font-family: "Aircruiser Title", sans-serif; */
+}
+
+
+
+
+
+
+        /* styles.css */
+
+/* Style form container */
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+/* Style form */
+form {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+
+form label, input {
+    color: #000;
+}
+
+form input {
+margin: 10px 0;
+}
+
+/* Style form inputs */
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style submit button */
+form button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+
+
+
+
+
+
     </style>
 </head>
 <body>
     
     <div class="container">
 
-        <div class="header" style="display: flex; justify-content: space-between; border: solid black 2px;">
+        {% if user.is_authenticated %}
+
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+        </form>
+        
+        {% else %}
+            <a href="{% url 'login' %}" style="display: block; text-align: right; color: white;">Log In</a>
+        {% endif %}
+
+        <div class="header" style="display: flex; justify-content: center;">
             <div class="logo">
-                <h2>CLASSIFIERS</h2>
+                <h2 class="title">CLASSIFIERS</h2>
             </div>
             
-            {% if user.is_authenticated %}
-
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Log Out</button>
-            </form>
             
-            {% else %}
-                <a href="{% url 'login' %}">Log In</a>
-            {% endif %}    
         </div>
 
         {% block content %}
