@@ -8,10 +8,10 @@
 
     home page
 
-    <a href="{% url 'core:index' %}">INDEX page</a>
+    <a href="{% url 'core:index' %}">Home page</a>
 
 {% else %}
     <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
+    <!-- <a href="{% url 'login' %}">Log In</a> -->
 {% endif %}
 {% endblock %}
