@@ -1,56 +1,51 @@
-import ultralytics
 from ultralytics import YOLO
 import os
 import shutil
+from zipfile import ZipFile
 
-# ultralytics.checks()
 
-model = YOLO('lastTrain/best3.pt')  # give right path
+def make_zip(input_dir, output_dir):
 
-input_dir = "lastTrain/testSample3"
+    with ZipFile(output_dir, 'w') as zip_object:
+        # Traverse all files and directories in the input directory
+        for root, directories, files in os.walk(input_dir):
+            for file in files:
+                # Create the file path
+                file_path = os.path.join(root, file)
+                # Create the relative path within the zip archive
+                arcname = os.path.relpath(file_path, input_dir)
+                # Add the file to the zip archive with the relative path
+                zip_object.write(file_path, arcname)
+    return output_dir
 
-classes = ["balaclava", "banknote", "baseball_bat", "blood",
+def classify(input_dir, output_dir):
+    model = YOLO('best3.pt')
+    classes = ["balaclava", "banknote", "baseball_bat", "blood",
         "cigarette", "drug", "fire", "knife", "pistol", "rifle", "other",]
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    preds = []
 
-er = []
-output_dir = "lastTrain/output6"
+    for f in os.listdir(input_dir):
+        img = os.path.join(input_dir, f)
 
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+        results = model(img)
 
-preds = []
-p_d = {}
+        probs = results[0].probs
+      
+        top1 = results[0].probs.numpy().top1conf
+        preds.append(top1)
+      
+        pred_class = probs.top1
+        if  top1 <= 0.85:
+            pred_class = -1
+            
+        dst = os.path.join(output_dir, classes[pred_class])
 
-for f in os.listdir(input_dir):
-  img = os.path.join(input_dir, f)
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+      
+        shutil.copyfile(img, os.path.join(dst, os.path.basename(img)))
+    zipped = make_zip(output_dir, str(output_dir) + ".zip")
+    return zipped
 
-  # try:
-  results = model(img)
-
-  probs = results[0].probs
-  
-  top1 = results[0].probs.numpy().top1conf
-  preds.append(top1)
-  # pred_class = 8
-  pred_class = probs.top1
-  if  top1 <= 0.85:
-      pred_class = -1
-      p_d[img] = top1
-  
-
-
-  dst = os.path.join(output_dir, classes[pred_class])
-
-  if not os.path.exists(dst):
-    os.makedirs(dst)
-  
-  shutil.copyfile(img, os.path.join(dst, os.path.basename(img)))
-  print(img, "done")
-  # except Exception as e:
-  #    er.append(f + f" {e}")
-  #    continue
-
-print(er)
-print(sum(preds)/len(preds))
-
-print(p_d)

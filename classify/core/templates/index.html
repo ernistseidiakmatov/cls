@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
+{% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{ user.username }}!
-
-    this is index page
-
+    
     <div style="display: flex; justify-content: center; padding-top: 20px;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
     
             <div style="margin-bottom: 10px;">
-                <label>Title</label>
+                <label style="font-size: 30px;">Title</label>
                 {{ form.title }}
                 <!-- {% render_field form.title %} -->
             </div>
@@ -28,9 +26,13 @@
         </form>
     </div>
 
-    <div>
+    <div style="text-align: center; font-size: 20px;">
         <p> {{ file_dir }} </p>
+        
+        <button style="color: balck;; width: 150px;height: 35px;"><a href="{{ MEDIA_URL }}/{{ output }}">DOWNLOAD</a></button>
     </div>
+
+    
 
     <!-- <div>
         {% for i in img %}
