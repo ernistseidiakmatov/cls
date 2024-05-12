@@ -6,9 +6,7 @@
 {% block content %}
 {% if user.is_authenticated %}
     Hi {{ user.username }}!
-
-    this is index page
-
+    this is home page
     <div style="display: flex; justify-content: center; padding-top: 20px;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -44,5 +42,6 @@
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'signup' %}">Sign up</a>
 {% endif %}
 {% endblock %}

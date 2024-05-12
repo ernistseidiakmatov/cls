@@ -9,90 +9,83 @@
 
     <style>
         .container{
-            /* position: relative; */
             height: 100vh;
-            /* margin: auto; */
-            width: 100%;
-            /* background-color: blueviolet; */
-            /* align-items: center; */
+            width: 100%;         
         }
 
-
+        a {
+            text-decoration: none;
+        }
 
         body {
-  background-color: #000;
-  color: #fff;
-}
+            background-color: #000;
+            color: #fff;
+        }
 
-.title {
-  color: red;
-  font-size: 72px;
-  text-align: center;
-  font-family: "Aircruiser", sans-serif;
-  /* font-family: "Aircruiser 3D", sans-serif; */
-  /* font-family: "Aircruiser Title", sans-serif; */
-}
+        .title {
+            color: red;
+            font-size: 100px;
+            text-align: center;
+            font-family: "Aircruiser", sans-serif;
+        }
 
+        .form-container {
+            display: flex;
+            justify-content: center;
+            margin: auto;
+        }
+ 
+        form {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
 
+        form label, input {
+            color: #000;
+        }
 
+        form input {
+        margin: 10px 0;
+        }
 
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
 
+        form button[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-        /* styles.css */
+        form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
 
-/* Style form container */
-.form-container {
-    display: flex;
-    justify-content: center;
-    margin: auto;
-}
+        .login_container {
+            display: flex;
+            text-decoration: none;
+            align-items: center;
+            gap: 20px;
+            float: inline-end;
+            margin-top: 31px;
+        }
 
-/* Style form */
-form {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-
-form label, input {
-    color: #000;
-}
-
-form input {
-margin: 10px 0;
-}
-
-/* Style form inputs */
-form input[type="text"],
-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Style submit button */
-form button[type="submit"] {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-form button[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-
-
-
-
-
+        .login_button {
+            padding: 6px 15px;
+            background-color: #45a049;
+            text-decoration: none;
+        }
 
     </style>
 </head>
@@ -108,15 +101,18 @@ form button[type="submit"]:hover {
         </form>
         
         {% else %}
-            <a href="{% url 'login' %}" style="display: block; text-align: right; color: white;">Log In</a>
+        <div class="login_container">
+            <a href="{% url 'login' %}" style="display: block; text-align: right; color: white;" class="login_button">Log In</a>
+            <a href="{% url 'signup' %}" style="display: block; text-align: right; color: white;" class="login_button">Sign up</a>
+        </div>
         {% endif %}
 
-        <div class="header" style="display: flex; justify-content: center;">
+        <div class="header" style="margin-left: 100px;">
             <div class="logo">
-                <h2 class="title">CLASSIFIERS</h2>
+                <a href="{% url 'home'%}">
+                    <h2 class="title">CLASSIFIERS</h2>
+                </a>
             </div>
-            
-            
         </div>
 
         {% block content %}

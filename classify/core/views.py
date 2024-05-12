@@ -1,4 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse
+from django.contrib.auth.forms import UserCreationForm
 from django.template import loader
 from .forms import FileForm
 from django.contrib.auth.models import User
@@ -6,9 +7,6 @@ from .models import UserFile
 from .utils.unzip import unzip_file
 from django.conf import settings
 import os
-
-# Create your views here.
-
 
 def index(request):
     
@@ -47,3 +45,17 @@ def index(request):
 def classify(request):
 
     return
+
+
+
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login page after successful signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
