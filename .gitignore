@@ -1,12 +1,13 @@
 venv/
 
-
-
-
+classify/media/carry/files/input_files/
+classify/media/carry/files/output_files/
 
 # Compiled Python files
 *.pyc
-__pycache__/
+classify/classify/__pycache__/
+
+
 
 # Django-related files
 *.sqlite3

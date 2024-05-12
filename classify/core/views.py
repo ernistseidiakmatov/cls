@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, HttpResponse, redirect
 from django.template import loader
 from .forms import FileForm
 from django.contrib.auth.models import User
 from .models import UserFile
 from .utils.unzip import unzip_file
+from .utils.zipCF import ZipClassifier
 from django.conf import settings
 import os
 
@@ -20,26 +22,31 @@ def index(request):
             username = request.user.username
 
             media_path = settings.MEDIA_ROOT
-            input_dir = os.path.join(media_path, username, "files\\input_files", file_dir)
-            
-            output_dir = os.path.join(media_path, username, "files\\input_files", "extracted")
-            unzip_file(input_dir, output_dir)
+            print("meida path: ", media_path)
 
-            context = {"form": FileForm(), "file_dir": file_dir}
+            md_files_dir = os.path.join(media_path, username, "files")
+            input_dir = os.path.join(md_files_dir,"input_files", file_dir)
+            output_dir = os.path.join(md_files_dir,"input_files", "ectracted") 
+    
+            
+            zcf = ZipClassifier() 
+            unzipped = unzip_file(input_dir, output_dir)+ "\\" + file_dir[:-4]
+            
+            classified_dir = os.path.join(md_files_dir, "output_files")
+            if not os.path.exists(classified_dir):
+                os.makedirs(classified_dir)
+
+            ot = zcf.classify(unzipped, classified_dir + "\\" +file_dir[:-4])
+            print(ot)
+            
+            context = {"form": FileForm(), "file_dir": "Click the button to download", "output": ot}
             return render(request, "index.html", context)
         else:
             context = {"form": form}
             return render(request, "index.html", context)
 
-    img = UserFile.objects.all()
-
-    context = {"form": FileForm(), "img": img}
+    context = {"form": FileForm()}
     return render(request, "index.html", context)
-    
-    # template = loader.get_template('index.html')
-    
-    # return HttpResponse(template.render(request))
-    # return HttpResponse("You're looking at question.")
 
 
 def classify(request):
