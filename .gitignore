@@ -1,7 +1,6 @@
 venv/
 
-classify/media/*
-classify/media/*
+media/*
 
 # Compiled Python files
 *.pyc
