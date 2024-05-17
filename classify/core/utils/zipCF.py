@@ -2,6 +2,10 @@ from ultralytics import YOLO
 import os
 import shutil
 from zipfile import ZipFile
+from pathlib import Path
+
+
+utils_path = Path(__file__).parent
 
 class ZipClassifier:
     @classmethod
@@ -21,7 +25,7 @@ class ZipClassifier:
 
     @classmethod
     def classify(cls, input_dir, output_dir):
-        model = YOLO('classify\\core\\utils\\best3.pt')
+        model = YOLO(utils_path / 'best3.pt')
         classes = ["balaclava", "banknote", "baseball_bat", "blood",
             "cigarette", "drug", "fire", "knife", "pistol", "rifle", "other",]
         if not os.path.exists(output_dir):
