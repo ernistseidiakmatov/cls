@@ -4,14 +4,19 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{ user.username }}!
+    <div style="display: flex; background-color:dimgrey; margin: 0;">
+        <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
 
-    home page
+        <!-- <h4 style="margin: 0;">Outputs \</h4> -->
+    </div>
 
-    <a href="{% url 'core:index' %}">Home page</a>
+    <div class="output-res">
+        <h3>You dont have output files yet.</h3>
+    </div>
+    
 
 {% else %}
-    <p style="text-align: center;">You are not logged in</p>
+    <!-- <p style="text-align: center;">You are not logged in</p> -->
     <!-- <a href="{% url 'login' %}">Log In</a> -->
 {% endif %}
 {% endblock %}

@@ -6,8 +6,13 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{ user.username }}!
-    this is home page
+
+    <div style="display: flex; background-color:dimgrey; margin: 0;">
+        <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
+        <a style="margin: 0; color: white;" href="{% url 'core:index' %}"> Classify \ </a>
+
+        <!-- <h4 style="margin: 0;">Outputs \</h4> -->
+    </div>
     
     <div style="display: flex; justify-content: center; padding-top: 20px;">
         <form method="POST" enctype="multipart/form-data">

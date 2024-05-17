@@ -30,7 +30,8 @@ def index(request):
     
             
             zcf = ZipClassifier() 
-            unzipped = unzip_file(input_dir, output_dir)+ "\\" + file_dir[:-4]
+            # + "\\" + file_dir[:-4]
+            unzipped = unzip_file(input_dir, output_dir)
             
             classified_dir = os.path.join(md_files_dir, "output_files")
             if not os.path.exists(classified_dir):
