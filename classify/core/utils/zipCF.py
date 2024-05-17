@@ -21,7 +21,7 @@ class ZipClassifier:
 
     @classmethod
     def classify(cls, input_dir, output_dir):
-        model = YOLO('D:\\Other Files\\capstone-demo\\web-app\\classify\\core\\utils\\best3.pt')
+        model = YOLO('classify\core\utils\zipCF.py')
         classes = ["balaclava", "banknote", "baseball_bat", "blood",
             "cigarette", "drug", "fire", "knife", "pistol", "rifle", "other",]
         if not os.path.exists(output_dir):
