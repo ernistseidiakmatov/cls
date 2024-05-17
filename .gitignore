@@ -1,6 +1,10 @@
 venv/
 
-media/*
+# ignoring media file
+classify/media/*
+
+# keeping media dir itself
+!classify/media/.gitkeep
 
 # Compiled Python files
 *.pyc
