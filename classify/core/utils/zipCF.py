@@ -21,7 +21,7 @@ class ZipClassifier:
 
     @classmethod
     def classify(cls, input_dir, output_dir):
-        model = YOLO('classify\\core\\utils\\best3.pt')
+        model = YOLO('/Users/ismoiljonabduraimov/Desktop/cls/classify/core/utils/best3.pt')
         classes = ["balaclava", "banknote", "baseball_bat", "blood",
             "cigarette", "drug", "fire", "knife", "pistol", "rifle", "other",]
         if not os.path.exists(output_dir):

@@ -20,5 +20,5 @@ def unzip_file(input_file, output_path):
             # unzip each file from the archive
             _ = [exe.submit(handle.extract, m, output_path) for m in handle.namelist()]
 
-    return os.path.join(output_path, input_file.split("\\")[-1][:-4])
+    return os.path.join(output_path, input_file.split("/")[-1][:-4])
  
