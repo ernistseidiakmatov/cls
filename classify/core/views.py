@@ -56,9 +56,6 @@ def index(request):
 
 
 # testing folder showing
-
-
-
 def home(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -68,10 +65,9 @@ def home(request):
         folder_names = []
 
         if os.path.exists(output_files_path) and os.path.isdir(output_files_path):
-            # List all directories inside the output_files directory
             folder_names = [name for name in os.listdir(output_files_path) if os.path.isdir(os.path.join(output_files_path, name))]
 
-        print("Folder names:", folder_names)  # For debugging
+        print("Folder names:", folder_names)
 
         context = {
             'folder_names': folder_names
@@ -79,10 +75,6 @@ def home(request):
         return render(request, 'home.html', context)
     else:
         return redirect('login')
-
-
-
-
 
 
 
@@ -114,6 +106,8 @@ def files_detail(request, folder_name):
         media_path = settings.MEDIA_ROOT
         user_folder_path = os.path.join(media_path, username, "files", "output_files", folder_name)
 
+        print("User folder path:", user_folder_path)  # Print user folder path for debugging
+
         if os.path.exists(user_folder_path) and os.path.isdir(user_folder_path):
             subfolders = [name for name in os.listdir(user_folder_path) if os.path.isdir(os.path.join(user_folder_path, name))]
             context = {
@@ -125,10 +119,10 @@ def files_detail(request, folder_name):
             return HttpResponse("Folder not found")
     else:
         return HttpResponse("Unauthorized", status=401)
-    
-    
-    
 
+    
+    
+    
 def folder_images(request, folder_name):
     if request.user.is_authenticated:
         username = request.user.username
@@ -147,11 +141,6 @@ def folder_images(request, folder_name):
             return HttpResponse("Folder not found")
     else:
         return HttpResponse("Unauthorized", status=401)
-
-
-
-
-
 
 # testing folder showing
 
