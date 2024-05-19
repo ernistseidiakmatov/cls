@@ -9,3 +9,6 @@ class FileForm(forms.ModelForm):
 
     def file_dir(self):
         return str(self.cleaned_data['file'])
+    
+    def file_title(self):
+        return str(self.cleaned_data['title'])

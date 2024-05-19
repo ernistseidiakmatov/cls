@@ -19,6 +19,7 @@ def index(request):
             form.save()
 
             file_dir = form.file_dir()
+            file_title = form.file_title()
             username = request.user.username
 
             media_path = settings.MEDIA_ROOT
@@ -40,7 +41,7 @@ def index(request):
             if not os.path.exists(classified_dir):
                 os.makedirs(classified_dir)
 
-            ot = zcf.classify(unzipped, classified_dir + "\\" +file_dir[:-4])
+            ot = zcf.classify(unzipped, classified_dir + "\\" +file_title[:-4])
             print(ot)
             
             context = {"form": FileForm(), "file_dir": "Click the button to download", "output": ot}
