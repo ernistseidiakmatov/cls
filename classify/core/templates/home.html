@@ -4,22 +4,26 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    <div style="display: flex; background-color:dimgrey; margin: 0;">
+    <div style="display: flex; background-color: dimgrey; margin: 0;">
         <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
     </div>
 
     <div class="user-folders">
-        <h3>User Folders:</h3>
-        <ul>
-            {% for folder_name in folder_names %}
+        <h3>User Folders: {{user}} </h3>
+        {% if folder_names %}
+            <ul style="display: flex; gap: 10px;">
+                {% for folder_name in folder_names %}
                 <li style="list-style: none;">
                     <a href="{% url 'files_detail' folder_name=folder_name %}" style="display: flex; flex-direction: column; text-decoration: none; color: wheat;">
                         <img src="{% static 'folder.png' %}" alt="Folder Icon" style="width: 50px; height: 50px;">
                         {{ folder_name }}
                     </a>
                 </li>
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No folders found in output_files.</p>
+        {% endif %}
     </div>
 
 {% else %}

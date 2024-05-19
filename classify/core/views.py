@@ -56,24 +56,32 @@ def index(request):
 
 
 # testing folder showing
+
+
+
 def home(request):
     if request.user.is_authenticated:
         username = request.user.username
         media_path = settings.MEDIA_ROOT
-        user_output_files_path = os.path.join(media_path, username, "files", "output_files")
+        output_files_path = os.path.join(media_path, username, "files", "output_files")
 
-        if os.path.exists(user_output_files_path):
-            folders = os.listdir(user_output_files_path)
-            folder_names = [folder for folder in folders if os.path.isdir(os.path.join(user_output_files_path, folder))]
+        folder_names = []
 
-            context = {
-                'folder_names': folder_names
-            }
-            return render(request, 'home.html', context)
-        else:
-            return HttpResponse("Output files folder not found")
+        if os.path.exists(output_files_path) and os.path.isdir(output_files_path):
+            # List all directories inside the output_files directory
+            folder_names = [name for name in os.listdir(output_files_path) if os.path.isdir(os.path.join(output_files_path, name))]
+
+        print("Folder names:", folder_names)  # For debugging
+
+        context = {
+            'folder_names': folder_names
+        }
+        return render(request, 'home.html', context)
     else:
         return redirect('login')
+
+
+
 
 
 
