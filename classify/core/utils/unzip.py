@@ -11,6 +11,7 @@
 from zipfile import ZipFile
 from concurrent.futures import ThreadPoolExecutor
 import os
+from pathlib import Path
  
 def unzip_file(input_file, output_path):
     # open the zip file
@@ -20,5 +21,9 @@ def unzip_file(input_file, output_path):
             # unzip each file from the archive
             _ = [exe.submit(handle.extract, m, output_path) for m in handle.namelist()]
 
-    return os.path.join(output_path, input_file.split("/")[-1][:-4])
+    path = Path(input_file)
+    filename_without_extension = path.stem
+    result = str(Path(output_path) / filename_without_extension)
+    # os.path.join(output_path, input_file.split("/")[-1][:-4])
+    return result
  
