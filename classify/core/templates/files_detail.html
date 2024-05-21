@@ -1,25 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}Folder Detail: {{ folder_name }}{% endblock %}
+{% block title %}Folder Detail{% endblock %}
 
 {% block content %}
-<div style="display: flex; background-color:dimgrey; margin: 0;">
-    <a style="margin: 0 5px 0 0; color: white;" href="{% url 'home' %}"> Home \ </a>
-    <a style="margin: 0; color: white;" href="{% url 'files_detail' folder_name=folder_name %}"> Files Detail \ </a>
-</div>
-<h2>Folder Detail: {{ folder_name }}</h2>
-<ul style="display: flex; gap: 10px;">
-    {% for subfolder in subfolders %}
-        <li style="list-style: none;">
-            <a href="{% url 'folder_images' folder_name=subfolder %}" style="display: flex; flex-direction: column; align-items: center; color: white; text-decoration: none;">
-                <img src="{% static 'folder.png' %}" alt="Folder Icon" style="width: 50px; height: 50px;">
-                {{ subfolder }}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
-{% for image_url in image_urls %}
-    <img src="{{ image_url }}" alt="Image">
-{% endfor %}
+{% if user.is_authenticated %}
+    <div style="display: flex; background-color: dimgrey; margin: 0;">
+        <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
+        <a style="margin: 0; color: white;" href="{% url 'files_detail' folder_path=folder_path %}"> {{ folder_path }} </a>
+    </div>
+
+    <div class="folder-details">
+        <h3>Contents of Folder: {{ folder_path }} </h3>
+        <h4>Subfolders:</h4>
+        {% if subfolder_names %}
+            <ul style="display: flex; gap: 10px;">
+                {% for subfolder_name in subfolder_names %}
+                <li style="list-style: none;">
+                    <a href="{% url 'files_detail' folder_path=folder_path|add:'/'|add:subfolder_name %}" style="display: flex; flex-direction: column; text-decoration: none; color: wheat;">
+                        <img src="{% static 'folder.png' %}" alt="Folder Icon" style="width: 50px; height: 50px;">
+                        {{ subfolder_name }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if image_files %}
+            <ul style="display: flex; gap: 10px; flex-wrap: wrap; border: 1px solid #fff; padding: 10px;">
+                {% for image_file in image_files %}
+                <li style="list-style: none;">
+                    <img src="{{ image_file.url }}" alt="{{ image_file.name }}" style="width: 200px; height: 200px;">
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+{% else %}
+    <p style="text-align: center;">You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+{% endif %}
 {% endblock %}
