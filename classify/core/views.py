@@ -9,6 +9,8 @@ from .utils.unzip import unzip_file
 from .utils.zipCF import ZipClassifier
 from django.conf import settings
 import os
+from django.core.files.storage import default_storage
+
 
 def index(request):
     
@@ -55,8 +57,6 @@ def index(request):
 
 
 
-
-# testing folder showing
 def home(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -77,73 +77,39 @@ def home(request):
     else:
         return redirect('login')
 
+    
 
-
-def files(request):
+def files_detail(request, folder_path):
     if request.user.is_authenticated:
         username = request.user.username
         media_path = settings.MEDIA_ROOT
-        user_folder_path = os.path.join(media_path, username, "files", "output_files")
+        full_folder_path = os.path.join(media_path, username, "files", "output_files", folder_path)
 
-        if os.path.exists(user_folder_path):
-            folders = os.listdir(user_folder_path)
-            folders_with_path = [os.path.join(user_folder_path, folder) for folder in folders if os.path.isdir(os.path.join(user_folder_path, folder))]
-            folder_names = [folder for folder in folders if os.path.isdir(os.path.join(user_folder_path, folder))]
+        subfolder_names = []
+        image_files = []
 
-            context = {
-                'folder_names': zip(folders_with_path, folder_names)
-            }
-            return render(request, 'files.html', context)
-        else:
-            return HttpResponse("Output files folder not found")
+        if os.path.exists(full_folder_path) and os.path.isdir(full_folder_path):
+            for item in os.listdir(full_folder_path):
+                item_path = os.path.join(full_folder_path, item)
+                if os.path.isdir(item_path):
+                    subfolder_names.append(item)
+                elif item.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+                    relative_path = os.path.relpath(item_path, media_path)
+                    image_files.append({
+                        'url': default_storage.url(relative_path),
+                        'name': item
+                    })
+
+        context = {
+            'folder_path': folder_path,
+            'subfolder_names': subfolder_names,
+            'image_files': image_files
+        }
+        return render(request, 'files_detail.html', context)
     else:
         return redirect('login')
-    
-    
-    
-def files_detail(request, folder_name):
-    if request.user.is_authenticated:
-        username = request.user.username
-        media_path = settings.MEDIA_ROOT
-        user_folder_path = os.path.join(media_path, username, "files", "output_files", folder_name)
 
-        print("User folder path:", user_folder_path)  # Print user folder path for debugging
 
-        if os.path.exists(user_folder_path) and os.path.isdir(user_folder_path):
-            subfolders = [name for name in os.listdir(user_folder_path) if os.path.isdir(os.path.join(user_folder_path, name))]
-            context = {
-                'folder_name': folder_name,
-                'subfolders': subfolders
-            }
-            return render(request, 'files_detail.html', context)
-        else:
-            return HttpResponse("Folder not found")
-    else:
-        return HttpResponse("Unauthorized", status=401)
-
-    
-    
-    
-def folder_images(request, folder_name):
-    if request.user.is_authenticated:
-        username = request.user.username
-        media_path = settings.MEDIA_ROOT
-        folder_path = os.path.join(media_path, username, "files", "output_files", "guns", folder_name)
-
-        if os.path.exists(folder_path) and os.path.isdir(folder_path):
-            images = os.listdir(folder_path)
-            image_urls = [os.path.join(settings.MEDIA_URL, username, "files", "output_files", "guns", folder_name, image) for image in images if os.path.isfile(os.path.join(folder_path, image))]
-            context = {
-                'folder_name': folder_name,
-                'image_urls': image_urls
-            }
-            return render(request, 'folder_images.html', context)
-        else:
-            return HttpResponse("Folder not found")
-    else:
-        return HttpResponse("Unauthorized", status=401)
-
-# testing folder showing
 
 
 def classify(request):
