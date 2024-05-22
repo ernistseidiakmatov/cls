@@ -25,6 +25,7 @@
             <p>No folders found for this user.</p>
         {% endif %}
     </div>
+    <a href="{% url 'core:downloads' %}" style="float: right;"><button style="font-size: 18px; color: white; background-color: red; border: 0;">Download</button></a>
 
 {% else %}
     <p style="text-align: center;">You are not logged in</p>

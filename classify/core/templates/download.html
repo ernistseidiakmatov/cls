@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Folder Detail{% endblock %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+
+
+<style>
+    .down-cont {
+        background-color: red;
+        width: 600px;
+        margin: auto;
+    }
+
+    down-opt {
+        display: inline;
+    }
+</style>
+
+
+<div style="display: flex; background-color: dimgrey; margin: 0;">
+    <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
+    <a style="margin: 0; color: white;" href="{% url 'core:downloads' %}"> Downloads \ </a>
+</div>
+
+
+<div class="down-cont">
+    <h2>Download</h2>
+    {% if folder_names %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {% for file in folder_names %}
+        <div class="down-opt">
+            <input type="radio" name="input" value="{{ file }}"></input>
+            <label for=""> {{ file }}</label>
+        </div>
+        {% endfor %}
+        
+        <button type="submit">Download</button>
+    </form>
+
+    {% else %}
+    <h2>You dont have output files</h2>
+    {% endif %}
+</div>
+
+
+
+{% else %}
+    <p style="text-align: center;">You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

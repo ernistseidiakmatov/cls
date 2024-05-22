@@ -117,6 +117,39 @@ def classify(request):
     return
 
 
+def downloads(request):
+
+    username = request.user.username
+    media_path = settings.MEDIA_ROOT
+    output_files_path = os.path.join(media_path, username, "files", "output_files")
+
+
+    if request.method == "POST":
+        down_file = request.POST.get("input") + ".zip"
+        username = request.user.username
+                
+        url = os.path.join(settings.MEDIA_URL, username, "files", "output_files", down_file)
+        return redirect(url)
+        # print(url)
+
+        # return redirect()
+
+    username = request.user.username
+    media_path = settings.MEDIA_ROOT
+    output_files_path = os.path.join(media_path, username, "files", "output_files")
+
+    folder_names = []
+
+    if os.path.exists(output_files_path) and os.path.isdir(output_files_path):
+        folder_names = [name for name in os.listdir(output_files_path) if os.path.isdir(os.path.join(output_files_path, name))]
+
+    context = {
+            'folder_names': folder_names
+        }
+    print(context)
+
+    return render(request, "download.html", context)
+
 
 
 
