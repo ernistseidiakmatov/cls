@@ -28,7 +28,7 @@ def index(request):
             print("meida path: ", media_path)
 
             md_files_dir = os.path.join(media_path, username, "files")
-            input_dir = os.path.join(md_files_dir,"input_files", file_dir)
+            input_dir = os.path.join(md_files_dir,"input_files", "temp", file_dir)
             output_dir = os.path.join(md_files_dir,"input_files", "ectracted") 
             print('output_dir::', output_dir)
     
@@ -43,7 +43,7 @@ def index(request):
             if not os.path.exists(classified_dir):
                 os.makedirs(classified_dir)
 
-            ot = zcf.classify(unzipped, classified_dir + "\\" +file_title[:-4])
+            ot = zcf.classify(unzipped, classified_dir + "\\" +file_title)
             print(ot)
             
             context = {"form": FileForm(), "file_dir": "Click the button to download", "output": ot}

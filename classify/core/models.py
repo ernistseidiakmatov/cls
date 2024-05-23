@@ -8,7 +8,7 @@ def user_dir(instance, filename):
     # Get the username of the user uploading the file
     username = instance.user.username
     # Return the path where the file should be saved
-    return f"{username}/files/input_files/{filename}"
+    return f"{username}/files/input_files/temp/{filename}"
 
 class UserFile(models.Model):
     title = models.CharField(max_length=50)

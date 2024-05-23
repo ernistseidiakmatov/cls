@@ -9,7 +9,7 @@ utils_path = Path(__file__).parent
 
 class ZipClassifier:
     @classmethod
-    def make_zip(cls, input_dir, output_dir):
+    def make_zip(cls, input_dir, output_dir, rm_dir):
         with ZipFile(output_dir, 'w') as zip_object:
             # Traverse all files and directories in the input directory
             for root, directories, files in os.walk(input_dir):
@@ -21,6 +21,8 @@ class ZipClassifier:
                     # Add the file to the zip archive with the relative path
                     zip_object.write(file_path, arcname)
                     # carry\files\output_files\test_input.zip
+        
+        shutil.rmtree(rm_dir)
         return "\\".join(output_dir.split("\\")[-5:])
 
     @classmethod
@@ -52,5 +54,5 @@ class ZipClassifier:
                 os.makedirs(dst)
 
             shutil.copyfile(img, os.path.join(dst, os.path.basename(img)))
-        zipped = cls.make_zip(output_dir, str(output_dir) + ".zip")
+        zipped = cls.make_zip(output_dir, str(output_dir) + ".zip", input_dir)
         return zipped
