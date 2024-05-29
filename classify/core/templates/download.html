@@ -2,51 +2,44 @@
 {% load static %}
 {% block title %}Folder Detail{% endblock %}
 
-
 {% block content %}
 {% if user.is_authenticated %}
-
 
 <style>
     .down-cont {
         background-color: red;
         width: 600px;
         margin: auto;
+        margin-top: 20px;
+        padding-top: 10px;
     }
-
-    down-opt {
+    .down-opt {
         display: inline;
     }
 </style>
-
 
 <div style="display: flex; background-color: dimgrey; margin: 0;">
     <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
     <a style="margin: 0; color: white;" href="{% url 'core:downloads' %}"> Downloads \ </a>
 </div>
 
-
 <div class="down-cont">
-    <h2>Download</h2>
+    <h2 style="margin-left: 10px;">Download</h2>
     {% if folder_names %}
-    <form action="" method="POST">
+    <form action="" method="POST" style="display: flex; flex-direction: column;">
         {% csrf_token %}
         {% for file in folder_names %}
         <div class="down-opt">
-            <input type="radio" name="input" value="{{ file }}"></input>
-            <label for=""> {{ file }}</label>
+            <input type="radio" name="input" value="{{ file }}" id="file_{{ forloop.counter }}"></input>
+            <label for="file_{{ forloop.counter }}"> {{ file }}</label>
         </div>
         {% endfor %}
-        
         <button type="submit">Download</button>
     </form>
-
     {% else %}
-    <h2>You dont have output files</h2>
+    <h2>You don't have output files</h2>
     {% endif %}
 </div>
-
-
 
 {% else %}
     <p style="text-align: center;">You are not logged in</p>

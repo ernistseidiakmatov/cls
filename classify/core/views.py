@@ -117,36 +117,48 @@ def classify(request):
     return
 
 
+from django.conf import settings
+from django.http import FileResponse, Http404
+import os
+import zipfile
+import shutil
+
 def downloads(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
 
     username = request.user.username
     media_path = settings.MEDIA_ROOT
     output_files_path = os.path.join(media_path, username, "files", "output_files")
-
 
     if request.method == "POST":
-        down_file = request.POST.get("input") + ".zip"
-        username = request.user.username
-                
-        url = os.path.join(settings.MEDIA_URL, username, "files", "output_files", down_file)
-        return redirect(url)
-        # print(url)
+        down_folder = request.POST.get("input")
+        if down_folder:
+            folder_path = os.path.join(output_files_path, down_folder)
+            zip_file_path = os.path.join(output_files_path, down_folder + ".zip")
 
-        # return redirect()
+            if os.path.exists(folder_path) and os.path.isdir(folder_path):
+                # Create a zip file of the folder
+                with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                    for root, dirs, files in os.walk(folder_path):
+                        for file in files:
+                            file_path = os.path.join(root, file)
+                            arcname = os.path.relpath(file_path, start=folder_path)
+                            zipf.write(file_path, arcname)
 
-    username = request.user.username
-    media_path = settings.MEDIA_ROOT
-    output_files_path = os.path.join(media_path, username, "files", "output_files")
+                # Serve the zip file
+                response = FileResponse(open(zip_file_path, 'rb'), as_attachment=True, filename=down_folder + ".zip")
+                return response
+            else:
+                raise Http404("Folder does not exist")
 
     folder_names = []
-
     if os.path.exists(output_files_path) and os.path.isdir(output_files_path):
         folder_names = [name for name in os.listdir(output_files_path) if os.path.isdir(os.path.join(output_files_path, name))]
 
     context = {
-            'folder_names': folder_names
-        }
-    print(context)
+        'folder_names': folder_names
+    }
 
     return render(request, "download.html", context)
 
