@@ -10,7 +10,8 @@ from .utils.zipCF import ZipClassifier
 from django.conf import settings
 import os
 from django.core.files.storage import default_storage
-
+from django.http import FileResponse, Http404
+import zipfile
 
 def index(request):
     
@@ -117,11 +118,7 @@ def classify(request):
     return
 
 
-from django.conf import settings
-from django.http import FileResponse, Http404
-import os
-import zipfile
-import shutil
+
 
 def downloads(request):
     if not request.user.is_authenticated:
@@ -138,7 +135,6 @@ def downloads(request):
             zip_file_path = os.path.join(output_files_path, down_folder + ".zip")
 
             if os.path.exists(folder_path) and os.path.isdir(folder_path):
-                # Create a zip file of the folder
                 with zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
                     for root, dirs, files in os.walk(folder_path):
                         for file in files:
@@ -146,7 +142,6 @@ def downloads(request):
                             arcname = os.path.relpath(file_path, start=folder_path)
                             zipf.write(file_path, arcname)
 
-                # Serve the zip file
                 response = FileResponse(open(zip_file_path, 'rb'), as_attachment=True, filename=down_folder + ".zip")
                 return response
             else:
