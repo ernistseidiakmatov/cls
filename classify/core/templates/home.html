@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block title %}Home{% endblock %}
 {% block content %} {% if user.is_authenticated %}
 <div style="display: flex; background-color: dimgrey; margin: 0">
-  <a style="margin: 0; color: white" href="{% url 'home' %}"> Home \ </a>
+  <a style="margin: 0; color: white" href="{% url 'home' %}"> Home / </a>
 </div>
 
 <div class="user-folders">
@@ -17,6 +17,7 @@
           flex-direction: column;
           text-decoration: none;
           color: wheat;
+          align-items: center;
         "
       >
         <img

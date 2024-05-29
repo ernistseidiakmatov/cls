@@ -112,14 +112,6 @@ def files_detail(request, folder_path):
 
 
 
-
-def classify(request):
-
-    return
-
-
-
-
 def downloads(request):
     if not request.user.is_authenticated:
         return redirect('login')

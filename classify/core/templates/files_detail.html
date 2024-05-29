@@ -5,7 +5,7 @@
 {% block content %}
 {% if user.is_authenticated %}
     <div style="display: flex; background-color: dimgrey; margin: 0;">
-        <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home \ </a>
+        <a style="margin: 0; color: white;" href="{% url 'home' %}"> Home / </a>
         <a style="margin: 0; color: white;" href="{% url 'files_detail' folder_path=folder_path %}"> {{ folder_path }} </a>
     </div>
 
@@ -16,7 +16,7 @@
             <ul style="display: flex; gap: 10px;">
                 {% for subfolder_name in subfolder_names %}
                 <li style="list-style: none;">
-                    <a href="{% url 'files_detail' folder_path=folder_path|add:'/'|add:subfolder_name %}" style="display: flex; flex-direction: column; text-decoration: none; color: wheat;">
+                    <a href="{% url 'files_detail' folder_path=folder_path|add:'/'|add:subfolder_name %}" style="display: flex; flex-direction: column; text-decoration: none; color: wheat; align-items: center;">
                         <img src="{% static 'folder.png' %}" alt="Folder Icon" style="width: 50px; height: 50px;">
                         {{ subfolder_name }}
                     </a>
